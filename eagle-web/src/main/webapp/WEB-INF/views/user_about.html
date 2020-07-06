@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>About you</title>
+	<link rel="stylesheet" type="text/css" href="styles/common_styles.css"  th:href="@{http://static.eagle.net/styles/common_styles.css}">
+	<link rel="stylesheet" type="text/css" href="styles/about_styles.css"  th:href="@{http://static.eagle.net/styles/about_styles.css}">
+	<script type="text/javascript" src="libs/anims.js" th:src="@{http://static.eagle.net/libs/anims.js}"></script>
+	<script type="text/javascript" src="libs/AboutScripts.js" th:src="@{http://static.eagle.net/libs/AboutScripts.js}"></script>
+	<meta charset="utf-8">
+</head>
+<body onload="AboutScripts()">
+	<div class="background">
+
+		<div class="about_content">
+			<p class="about_block_title"> Tell us about yourself </p>
+
+				<div class="name_sex_block">
+					<form th:action="@{/about-user-create}" method="post" th:object="${details_form}" >
+						<input type="text" name="details_fname" class="about_input"
+							placeholder="Your name" th:field="*{userFname}" />
+						<input type="text" name="details_lname" class="about_input" 
+							placeholder="Your surname" th:field="*{userLname}" />
+						<div class="sex_block">
+							<label class="sex_label">
+								<input type="radio" name="sex" value="m" class="sex_radio" th:field="*{sex}"/>
+								<span class="radio_box"> <span> </span></span> <span> male </span>
+							</label>
+							<label class="sex_label">
+								<input type="radio" name="sex" value="f" class="sex_radio" th:field="*{sex}"/>
+								<span class="radio_box"> <span> </span></span> <span> female </span>
+							</label>
+						</div>
+						<input type="submit" name="form_submit" class="about_input about_submit" id="about_submit" value="Enter" />
+					</form>
+
+				</div>
+
+		</div>
+
+	</div>
+</body>
+</html>

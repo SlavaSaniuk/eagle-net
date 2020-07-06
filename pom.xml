@@ -11,6 +11,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>eagle-web</module>
         <module>eagle-authentication</module>
     </modules>
 

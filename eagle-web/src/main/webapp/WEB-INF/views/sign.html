@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+	<title>Sign</title>
+	<script type="text/javascript" th:src="@{http://static.eagle.net/libs/SignScripts.js}" ></script>
+	<link rel="stylesheet" type="text/css" href="/styles/common_styles.css" th:href="@{http://static.eagle.net/styles/common_styles.css}">
+	<link rel="stylesheet" type="text/css" href="styles/registration_styles.css" th:href="@{http://static.eagle.net/styles/registration_styles.css}">
+	<meta charset="utf-8">
+</head>
+<body onload="SignInit()">
+	<div class="background">
+
+
+		<div class="sign_content" id="sign_container">
+
+			<div class="sign_block" id="sign_in_block">
+				<p class="sign_block_title"> Sign In </p>
+
+				<form id="sign_in_form" method="post" th:action="@{/signin}" th:object="${AccountForm}">
+					<input type="text" name="account_email" class="sign_input"
+						placeholder="Your email" th:field="*{accountEmail}" />
+					<input type="password" name="account_password" class="sign_input" 
+						placeholder="Your password" th:field="*{accountPassword}" />
+					<input type="submit" name="form_submit" class="sign_input sign_submit" id="sign_in_submit" value="Sign In" />
+				</form>
+
+				<div class="sign_block_message">
+					<p class="sign_msg"> Not registered? </p>
+					<a href="#" class="sign-link-toggle" id="sign_in_toggle"> Sign Up </a>
+				</div>	
+
+			</div>
+
+			<div class="sign_block" id="sign_up_block">
+				<p class="sign_block_title"> Sign Up </p>
+
+				<form id="sign_up_form" method="post" th:action="@{/signup}" th:object="${AccountForm}">
+					<input type="text" name="account_email" class="sign_input"
+						placeholder="Your email" th:field="*{accountEmail}" />
+					<input type="password" name="account_password" class="sign_input" 
+						placeholder="Your password" th:field="*{accountPassword}"/>
+					<input type="submit" name="form_submit" class="sign_input sign_submit" id="sign_up_submit" value="Sign Up" />
+				</form>
+
+				<div class="sign_block_message">
+					<p class="sign_msg"> Already registered? </p>
+					<a href="#" class="sign-link-toggle" id="sign_up_toggle"> Sign In </a>
+				</div>	
+
+			</div>
+
+		</div>
+
+	</div>
+</body>
+</html>
