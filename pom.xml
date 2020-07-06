@@ -10,5 +10,8 @@
 
     <packaging>pom</packaging>
 
+    <modules>
+        <module>eagle-authentication</module>
+    </modules>
 
 </project>

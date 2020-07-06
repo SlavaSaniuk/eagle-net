@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/eagle-auth" docBase="/eagle-auth">
+
+    <Resource name="jdbc/eagle-users-datasource"
+              auth="Container"
+              type="javax.sql.DataSource"
+              username="eagle-admin"
+              password="12345678"
+              driverClassName="com.mysql.cj.jdbc.Driver"
+              url="jdbc:mysql://10.8.8.254:3306/eagle_users"
+              maxTotal="8"
+              maxIdle="4"  />
+
+
+</Context>
