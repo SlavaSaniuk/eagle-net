@@ -13,6 +13,7 @@
     <modules>
         <module>eagle-web</module>
         <module>eagle-authentication</module>
+        <module>eagle-net-router</module>
     </modules>
 
 </project>
