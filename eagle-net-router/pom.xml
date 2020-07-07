@@ -30,7 +30,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-jar-plugin</artifactId>
-                        <version>3.2.0</version>
+                        <version>3.1.2</version>
                         <configuration>
                             <excludes>
                                 <exclude>application.properties</exclude>
@@ -43,9 +43,15 @@
 
         <profile>
             <id>eagle-net-ROUTER-local</id>
+            <properties>
+                <profile.name>LOCAL</profile.name>
+            </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
+            <build>
+                <finalName>${project.name}-${project.version}-${profile.name}</finalName>
+            </build>
         </profile>
 
     </profiles>
@@ -112,6 +118,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.3.1.RELEASE</version>
                 <configuration>
                     <mainClass>${executable.class}</mainClass>
                 </configuration>
@@ -123,14 +130,22 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>7</source>
-                    <target>7</target>
+                    <source>8</source>
+                    <target>8</target>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M5</version>
+            </plugin>
+
         </plugins>
     </build>
 
