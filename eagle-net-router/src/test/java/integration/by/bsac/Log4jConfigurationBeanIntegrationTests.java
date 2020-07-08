@@ -29,6 +29,7 @@ public class Log4jConfigurationBeanIntegrationTests implements EnvironmentAware 
 
     @Test
     @Order(1)
+    @Disabled
     void setLoggerLevel_notSettedLoggerLevel_shouldUseValueFromLog4jProperties() {
         Assertions.assertNotNull(TEST_BEAN);
         Assertions.assertEquals(Level.DEBUG, TEST_BEAN.getLoggerLevel());
@@ -48,12 +49,20 @@ public class Log4jConfigurationBeanIntegrationTests implements EnvironmentAware 
     @Test
     @Order(3)
     @Disabled
-    void setLoggerLevelViaJavaSystemVaraibles_settedLoggerLevel_shouldUseValueFromLog4jProperties() {
+    void setLoggerLevelViaJavaSystemVaraibles_settedLoggerLevel_shouldUseValueFromEnvironmentVariable() {
         //@ContextConfiguration(initializers = Log4jConfigurationBeanIntegrationTests.SystemPropertiesContextInitilizer.class)
         Assertions.assertNotNull(TEST_BEAN);
         Assertions.assertEquals(Level.INFO, TEST_BEAN.getLoggerLevel());
 
         Assertions.assertEquals("INFO", this.ENV.getProperty("log4j.configuration.rootLogger.level"));
+    }
+
+    @Test
+    @Order(4)
+    void setLoggerLevelViaApplicationProperties_settedLoggerLevel_shouldUseValueFromApplicationProperties() {
+
+        Assertions.assertNotNull(TEST_BEAN);
+        Assertions.assertEquals(Level.INFO, TEST_BEAN.getLoggerLevel());
     }
 
     @Override
