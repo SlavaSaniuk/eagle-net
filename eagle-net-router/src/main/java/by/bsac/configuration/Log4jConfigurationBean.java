@@ -15,7 +15,12 @@ import java.util.Map;
 import static by.bsac.core.logging.SpringCommonLogging.*;
 
 
-
+/**
+ *  {@link Log4jConfigurationBean} class is spring bean, which help user to set {@link org.apache.log4j.spi.RootLogger}
+ * logger level via externalized configuration (command line arg., system/OS environment variables, application properties).
+ *  User must specify {@link Log4jConfigurationBean#LOG4J_LOGGER_LEVEL_PROPERTY_NAME} property with
+ *  following values: TRACE, DEBUG, INFO, WARN, CONSOLE in the externalized configuration.
+ */
 @Component("Log4jConfigurationBean")
 @SuppressWarnings("unused")
 public class Log4jConfigurationBean implements EnvironmentAware, InitializingBean {
@@ -29,6 +34,9 @@ public class Log4jConfigurationBean implements EnvironmentAware, InitializingBea
     public static final Map<String, Level> LOGGER_LEVEL_PROPERTY_VALUES_MAPPING = new HashMap<>();
 
     //Constructor
+    /**
+     * Construct new {@link Log4jConfigurationBean} spring bean.
+     */
     public Log4jConfigurationBean() {
         LOGGER.debug(CREATION.startCreateBean(BeanDefinition.of(Log4jConfigurationBean.class)));
     }
@@ -77,7 +85,7 @@ public class Log4jConfigurationBean implements EnvironmentAware, InitializingBea
     }
 
     /**
-     * Set root logger {@link Level} with value specified via java {@link System} property.
+     * Set root logger {@link Level} with value specified via java {@link System#getenv()} property.
      * This is SECOND method in order to set root logger level via externalized configuration.
      * @return - 'true', if system property is defined and it's value is supported.
      * @throws UnsupportedLoggerLevelValue - throws in case, when configuration property is exist but it's value is unsupported;
@@ -98,6 +106,12 @@ public class Log4jConfigurationBean implements EnvironmentAware, InitializingBea
 
     }
 
+    /**
+     * Set root logger {@link Level} with value specified via {@link Environment} spring bean.
+     * This is FIRST and MAIN method in order to set root logger level via externalized configuration.
+     * @return - 'true', if system property is defined and it's value is supported.
+     * @throws UnsupportedLoggerLevelValue - throws in case, when configuration property is exist but it's value is unsupported;
+     */
     private boolean setLoggerLevelViaEnvironment() throws UnsupportedLoggerLevelValue {
 
         //Get property
@@ -147,7 +161,11 @@ public class Log4jConfigurationBean implements EnvironmentAware, InitializingBea
         return org.apache.log4j.Logger.getRootLogger().getLevel();
     }
 
-    private static void initializeLoggerLevelPropertyValuesMapping() {
+    /**
+     * Method initialize {@link Log4jConfigurationBean#LOGGER_LEVEL_PROPERTY_VALUES_MAPPING} with key=value
+     * pairs in {@link Log4jConfigurationBean#afterPropertiesSet()} method.
+     */
+    private void initializeLoggerLevelPropertyValuesMapping() {
 
         LOGGER.debug("Initialize logger levels property values mapping;");
 
@@ -160,6 +178,7 @@ public class Log4jConfigurationBean implements EnvironmentAware, InitializingBea
 
     //Dependency management
     @SuppressWarnings("NullableProblems")
+    @Override
     public void setEnvironment(Environment environment) {
         LOGGER.debug(DependencyManagement.setViaSetter(BeanDefinition.of(Environment.class), Log4jConfigurationBean.class));
         this.environment = environment;
@@ -177,7 +196,7 @@ public class Log4jConfigurationBean implements EnvironmentAware, InitializingBea
                 new BeanCreationException(DependencyManagement.Exceptions.nullProperty(Environment.class)));
 
         //Initialize LOGGER_LEVEL_PROPERTY_VALUES_MAPPING
-        initializeLoggerLevelPropertyValuesMapping();
+        this.initializeLoggerLevelPropertyValuesMapping();
 
         //Try to set logger level
         try {
@@ -191,8 +210,16 @@ public class Log4jConfigurationBean implements EnvironmentAware, InitializingBea
     }
 
     //Inner classes
+    /**
+     * {@link UnsupportedLoggerLevelValue} runtime exception throws in cases when user or developer
+     * set {@link Log4jConfigurationBean#LOG4J_LOGGER_LEVEL_PROPERTY_NAME} property with unsupported or invalid value.
+     */
     public static class UnsupportedLoggerLevelValue extends RuntimeException {
 
+        /**
+         * Construct new runtime exception object with custom exception message.
+         * @param a_value - unsupported or invalid value;
+         */
         public UnsupportedLoggerLevelValue(String a_value) {
             super(String.format("Specified value [%s] for property [%s] is unsupported. " +
                     "Please, use one of the following values: TRACE, DEBUG, INFO, WARN, ERROR",
