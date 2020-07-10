@@ -1,0 +1,54 @@
+version: '2'
+
+services:
+ container-ms-rest-eagle-authentication:
+  build: ./authentication.eagle.net/
+  volumes: 
+   - ./authentication.eagle.net/volume-ms-eagle-authentication:/home/webapp
+  networks:
+   network-eagle-net:
+    ipv4_address: 10.8.8.20 
+  extra_hosts:
+   - "database-eagle-users:10.8.8.254"
+ 
+ container-ms-rest-eagle-users-details:
+  build: ./details.eagle.net/
+  volumes:
+   - ./details.eagle.net/volume-ms-eagle-users-details:/home/webapp
+  networks:
+   network-eagle-net:
+    ipv4_address: 10.8.8.25
+  extra_hosts:
+   - "database-eagle-users:${DB_EAGLE_USERS_IP}"
+
+ container-ms-eagle-net-router:
+  build: ./router.eagle.net/
+  volumes:
+   - ./router.eagle.net/volume-ms-eagle-net-router:/home/webapp
+  entrypoint: java -jar ${APP_DEFAULT_PATH}/${EAGLE_NET_ROUTER_APP_FILE} --spring.config.location=file:${APP_DEFAULT_PATH}/application.properties
+  env_file:
+   - ./router.eagle.net/app.env
+  networks:
+   network-eagle-net:
+    ipv4_address: 10.8.8.1
+    aliases:
+     - router.eagle.net
+  extra_hosts:
+   - "details.eagle.net:${REST_EAGLE_NET_DETAILS}"
+   - "authentication.eagle.net:${REST_EAGLE_NET_AUTHENTICATION}"
+
+ container-ms-test-debian:
+  build: ./authentication.eagle.net/
+  networks:
+   network-eagle-net:
+    ipv4_address: 10.8.8.253
+  extra_hosts:
+   - "database-eagle-users:10.8.8.254"
+
+networks:
+ network-eagle-net:
+   driver: bridge
+   ipam:
+    config:
+     - subnet: 10.8.8.0/24
+       gateway: 10.8.8.254
